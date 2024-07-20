@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: springheaven
+      MYSQL_DATABASE: springheaven
+      MYSQL_USER: praveen
+      MYSQL_PASSWORD: springheaven
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  spring-boot-app:
+    build: .
+    container_name: spring-boot-app
+    ports:
+      - "9191:9191"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/springheaven
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: springheaven
+
+volumes:
+  mysql_data:
