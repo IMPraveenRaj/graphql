@@ -1,0 +1,43 @@
+package org.springheaven.graphql;
+
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springheaven.graphql.entity.Product;
+import org.springheaven.graphql.repository.ProductRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@SpringBootApplication
+public class SpringGraphqlApplication {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @PostConstruct
+    public void dumpData(){
+
+
+        List<Product> products = Stream.of(
+				new Product("Laptop", "Electronics", 74999.99f, 50),
+				new Product("Smartphone", "Electronics", 39999.99f, 100),
+				new Product("Office Chair", "Furniture", 7999.99f, 200),
+				new Product("Notebook", "Stationery", 99.99f, 500),
+				new Product("Desk Lamp", "Furniture", 1999.99f, 150),
+				new Product("Water Bottle", "Accessories", 499.99f, 300)
+		).collect(Collectors.toList());
+
+        productRepository.saveAll(products);
+
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringGraphqlApplication.class, args);
+    }
+
+
+
+}
